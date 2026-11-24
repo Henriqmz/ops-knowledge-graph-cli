@@ -1,0 +1,37 @@
+{
+  "nodes": [
+    {
+      "id": "prod-vps-01",
+      "type": "Infrastructure",
+      "name": "Production Linux Host (Demo)",
+      "description": "Servidor Linux Ubuntu responsável por workers, agendamentos e dashboards.",
+      "properties": {"os": "Ubuntu 24.04 LTS", "region": "us-east-1"}
+    },
+    {
+      "id": "lead-sync-worker",
+      "type": "Service",
+      "name": "Ads-to-CRM Lead Worker",
+      "description": "Coleta leads via OAuth 2.0 e grava no CRM com deduplicação em SQLite.",
+      "properties": {"schedule": "every 1 min", "runtime": "Python 3.12"}
+    },
+    {
+      "id": "payments-worker",
+      "type": "Service",
+      "name": "Billing & Webhook Processor",
+      "description": "Processa webhooks assinados com HMAC-SHA256 e atualiza assinaturas.",
+      "properties": {"port": 8095, "runtime": "Python 3.12"}
+    },
+    {
+      "id": "rule-no-unverified-webhooks",
+      "type": "Rule",
+      "name": "Validação Obrigatória de Assinatura HMAC",
+      "description": "Todo webhook recebido em produção deve validar X-Signature-256 antes de alterar estado.",
+      "properties": {"severity": "CRITICAL"}
+    }
+  ],
+  "edges": [
+    {"source": "lead-sync-worker", "relation": "RUNS_ON", "target": "prod-vps-01"},
+    {"source": "payments-worker", "relation": "RUNS_ON", "target": "prod-vps-01"},
+    {"source": "payments-worker", "relation": "GOVERNED_BY", "target": "rule-no-unverified-webhooks"}
+  ]
+}
