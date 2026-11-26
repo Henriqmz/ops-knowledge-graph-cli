@@ -4,6 +4,7 @@ import argparse
 from pathlib import Path
 
 from .graph import OpsKnowledgeGraph
+from .server import run_studio
 
 
 def main() -> None:
@@ -14,7 +15,13 @@ def main() -> None:
     parser.add_argument("--search", help="Busca por palavra-chave")
     parser.add_argument("--rules", action="store_true", help="Lista todas as regras/guardrails")
     parser.add_argument("--mermaid", action="store_true", help="Exporta diagrama Mermaid")
+    parser.add_argument("--serve", action="store_true", help="Inicia o explorador web interativo do grafo")
+    parser.add_argument("--port", type=int, default=8026, help="Porta do explorador web (padrão: 8026)")
     args = parser.parse_args()
+
+    if args.serve:
+        run_studio(graph_file=Path(args.file), port=args.port)
+        return
 
     kg = OpsKnowledgeGraph.from_json_file(Path(args.file))
 

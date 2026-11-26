@@ -1,6 +1,8 @@
-# Ops Knowledge Graph CLI (Memória Operacional para Agentes de IA)
+# Ops Knowledge Graph Explorer & CLI (Memória Operacional para Agentes de IA)
 
-Motor leve de **Knowledge Graph local em JSON + CLI Python** projetado para dar memória persistente e estruturada a equipes de engenharia e agentes de IA (Claude, Codex, Cursor, Antigravity): mapeia serviços, servidores, integrações, dependências e regras operacionais (*guardrails*) com busca instantânea e exportação de diagrama **Mermaid**.
+![Interface Ops Knowledge Graph Explorer](docs/preview.png)
+
+Motor leve de **Knowledge Graph local em JSON + Explorador Web (`--serve`) + CLI Python** projetado para dar memória persistente e estruturada a equipes de engenharia e agentes de IA (Claude, Codex, Cursor, Antigravity): mapeia serviços, servidores, integrações, dependências e regras operacionais (*guardrails*) com busca instantânea e exportação de diagrama **Mermaid**.
 
 ## Por que este projeto importa?
 
@@ -17,6 +19,7 @@ python -m src.cli --mermaid
 ## Como Executar
 
 ```bash
+python -m src.cli --serve   # Abre o Explorador Web em http://127.0.0.1:8026
 python -m src.cli --summary
 pytest -v
 ```
